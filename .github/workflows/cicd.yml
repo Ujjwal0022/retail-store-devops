@@ -115,7 +115,7 @@ jobs:
             --repository-name "retail-store-catalog" \
             --region "${{ secrets.AWS_REGION }}" \
             --image-tag-mutability MUTABLE \
-            --no-image-scanning-configuration
+            
 
       - name: Build Docker image
         run: |
@@ -178,7 +178,7 @@ jobs:
             --repository-name "retail-store-checkout" \
             --region "${{ secrets.AWS_REGION }}" \
             --image-tag-mutability MUTABLE \
-            --no-image-scanning-configuration
+            
 
       - name: Build Docker image
         run: |
@@ -241,7 +241,7 @@ jobs:
             --repository-name "retail-store-orders" \
             --region "${{ secrets.AWS_REGION }}" \
             --image-tag-mutability MUTABLE \
-            --no-image-scanning-configuration
+            
 
       - name: Build Docker image
         run: |
@@ -304,7 +304,7 @@ jobs:
             --repository-name "retail-store-ui" \
             --region "${{ secrets.AWS_REGION }}" \
             --image-tag-mutability MUTABLE \
-            --no-image-scanning-configuration
+            
 
       - name: Build Docker image
         run: |

@@ -152,7 +152,7 @@ aws ecr describe-repositories \
   --repository-name "retail-store-${SERVICE}" \
   --region "${AWS_REGION}" \
   --image-tag-mutability MUTABLE \
-  --no-image-scanning-configuration
+  
 ```
 
 If the `create-repository` call itself fails (permissions error, network error, etc.) the step exits non-zero, the job fails, and an error message with the repository name, region, and exit code is emitted (Requirement 3.4).
