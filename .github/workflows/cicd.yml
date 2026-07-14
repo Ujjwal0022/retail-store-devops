@@ -88,6 +88,7 @@ jobs:
             echo "No changes to commit for cart"
           else
             git commit -m "Update cart image to ${GITHUB_SHA::7} [skip ci]"
+            git pull --rebase origin gitops
             git push origin gitops
           fi
 
@@ -152,6 +153,7 @@ jobs:
             echo "No changes to commit for catalog"
           else
             git commit -m "Update catalog image to ${IMAGE_TAG} [skip ci]"
+            git pull --rebase origin gitops
             git push origin gitops
           fi
 
@@ -216,6 +218,7 @@ jobs:
             echo "No changes to commit for checkout"
           else
             git commit -m "Update checkout image to ${IMAGE_TAG} [skip ci]"
+            git pull --rebase origin gitops
             git push origin gitops
           fi
 
@@ -280,6 +283,7 @@ jobs:
             echo "No changes to commit for orders"
           else
             git commit -m "Update orders image to ${IMAGE_TAG} [skip ci]"
+            git pull --rebase origin gitops
             git push origin gitops
           fi
 
@@ -344,5 +348,6 @@ jobs:
             echo "No changes to commit for ui"
           else
             git commit -m "Update ui image to ${IMAGE_TAG} [skip ci]"
+            git pull --rebase origin gitops
             git push origin gitops
           fi
