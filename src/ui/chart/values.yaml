@@ -4,9 +4,9 @@
 
 replicaCount: 1
 image:
-  repository: 626072240565.dkr.ecr.us-west-2.amazonaws.com/retail-store-ui
+  repository: 279251428090.dkr.ecr.us-east-1.amazonaws.com/retail-store-ui
   pullPolicy: Always
-  tag: "6812858"
+  tag: "a6c84b2"
 imagePullSecrets:
   - name: regcred
 nameOverride: ""
@@ -125,7 +125,6 @@ ingresses:
       - secretName: tls-secret
         hosts:
           - retail-store.trainwithshubham.com
-
 # Cert Manager Configuration
 certManager:
   createClusterIssuer: true
