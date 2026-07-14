@@ -1,0 +1,16 @@
+{
+  "name": "cicd-helpers",
+  "version": "1.0.0",
+  "description": "Helper functions and property-based tests for the GitHub Actions CI/CD pipeline",
+  "main": "pipelineHelpers.js",
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "fast-check": "3.23.2",
+    "js-yaml": "4.3.0"
+  }
+}

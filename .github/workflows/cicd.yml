@@ -1,0 +1,343 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [gitops]
+  pull_request:
+    branches: [gitops]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      cart: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.filter.outputs.cart }}
+      catalog: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.filter.outputs.catalog }}
+      checkout: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.filter.outputs.checkout }}
+      orders: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.filter.outputs.orders }}
+      ui: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.filter.outputs.ui }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            cart:
+              - 'src/cart/**'
+            catalog:
+              - 'src/catalog/**'
+            checkout:
+              - 'src/checkout/**'
+            orders:
+              - 'src/orders/**'
+            ui:
+              - 'src/ui/**'
+
+      - name: Override flags for workflow_dispatch
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "All services forced to true for manual dispatch"
+
+  build-cart:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.cart == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - uses: aws-actions/amazon-ecr-login@v2
+        id: ecr-login
+
+      - name: Ensure ECR repository exists
+        run: |
+          aws ecr describe-repositories --repository-names "retail-store-cart" --region "${{ secrets.AWS_REGION }}" 2>/dev/null || aws ecr create-repository --repository-name "retail-store-cart" --region "${{ secrets.AWS_REGION }}" --image-tag-mutability MUTABLE --no-image-scanning-configuration
+
+      - name: Build Docker image
+        run: docker build -f src/cart/Dockerfile -t ${{ steps.ecr-login.outputs.registry }}/retail-store-cart:${GITHUB_SHA::7} src/cart/
+
+      - name: Push Docker image with retry
+        run: |
+          for i in 1 2 3; do
+            docker push ${{ steps.ecr-login.outputs.registry }}/retail-store-cart:${GITHUB_SHA::7} && break
+            echo "Push attempt $i failed, retrying in 10s..."
+            [ $i -lt 3 ] && sleep 10 || exit 1
+          done
+
+      - name: Update Helm values.yaml
+        run: |
+          yq e '.image.repository = "${{ steps.ecr-login.outputs.registry }}/retail-store-cart"' -i src/cart/chart/values.yaml
+          yq e '.image.tag = "'${GITHUB_SHA::7}'"' -i src/cart/chart/values.yaml
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git add src/cart/chart/values.yaml
+          if git diff --staged --quiet; then
+            echo "No changes to commit for cart"
+          else
+            git commit -m "Update cart image to ${GITHUB_SHA::7} [skip ci]"
+            git push origin gitops
+          fi
+
+  build-catalog:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.catalog == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - uses: aws-actions/amazon-ecr-login@v2
+        id: ecr-login
+
+      - name: Ensure ECR repository exists
+        run: |
+          aws ecr describe-repositories \
+            --repository-names "retail-store-catalog" \
+            --region "${{ secrets.AWS_REGION }}" 2>/dev/null \
+          || aws ecr create-repository \
+            --repository-name "retail-store-catalog" \
+            --region "${{ secrets.AWS_REGION }}" \
+            --image-tag-mutability MUTABLE \
+            --no-image-scanning-configuration
+
+      - name: Build Docker image
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          docker build \
+            -f src/catalog/Dockerfile \
+            -t ${{ steps.ecr-login.outputs.registry }}/retail-store-catalog:${IMAGE_TAG} \
+            src/catalog/
+
+      - name: Push Docker image with retry
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          for i in 1 2 3; do
+            docker push ${{ steps.ecr-login.outputs.registry }}/retail-store-catalog:${IMAGE_TAG} && break
+            echo "Push attempt $i failed, retrying in 10s..."
+            sleep 10
+          done
+
+      - name: Update Helm values.yaml
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          yq e '.image.repository = "${{ steps.ecr-login.outputs.registry }}/retail-store-catalog"' -i src/catalog/chart/values.yaml
+          yq e ".image.tag = \"${IMAGE_TAG}\"" -i src/catalog/chart/values.yaml
+
+      - name: Commit and push changes
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git add src/catalog/chart/values.yaml
+          if git diff --staged --quiet; then
+            echo "No changes to commit for catalog"
+          else
+            git commit -m "Update catalog image to ${IMAGE_TAG} [skip ci]"
+            git push origin gitops
+          fi
+
+  build-checkout:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.checkout == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - uses: aws-actions/amazon-ecr-login@v2
+        id: ecr-login
+
+      - name: Ensure ECR repository exists
+        run: |
+          aws ecr describe-repositories \
+            --repository-names "retail-store-checkout" \
+            --region "${{ secrets.AWS_REGION }}" 2>/dev/null \
+          || aws ecr create-repository \
+            --repository-name "retail-store-checkout" \
+            --region "${{ secrets.AWS_REGION }}" \
+            --image-tag-mutability MUTABLE \
+            --no-image-scanning-configuration
+
+      - name: Build Docker image
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          docker build \
+            -f src/checkout/Dockerfile \
+            -t ${{ steps.ecr-login.outputs.registry }}/retail-store-checkout:${IMAGE_TAG} \
+            src/checkout/
+
+      - name: Push Docker image with retry
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          for i in 1 2 3; do
+            docker push ${{ steps.ecr-login.outputs.registry }}/retail-store-checkout:${IMAGE_TAG} && break
+            echo "Push attempt $i failed, retrying in 10s..."
+            sleep 10
+          done
+
+      - name: Update Helm values.yaml
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          yq e '.image.repository = "${{ steps.ecr-login.outputs.registry }}/retail-store-checkout"' -i src/checkout/chart/values.yaml
+          yq e ".image.tag = \"${IMAGE_TAG}\"" -i src/checkout/chart/values.yaml
+
+      - name: Commit and push changes
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git add src/checkout/chart/values.yaml
+          if git diff --staged --quiet; then
+            echo "No changes to commit for checkout"
+          else
+            git commit -m "Update checkout image to ${IMAGE_TAG} [skip ci]"
+            git push origin gitops
+          fi
+
+  build-orders:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.orders == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - uses: aws-actions/amazon-ecr-login@v2
+        id: ecr-login
+
+      - name: Ensure ECR repository exists
+        run: |
+          aws ecr describe-repositories \
+            --repository-names "retail-store-orders" \
+            --region "${{ secrets.AWS_REGION }}" 2>/dev/null \
+          || aws ecr create-repository \
+            --repository-name "retail-store-orders" \
+            --region "${{ secrets.AWS_REGION }}" \
+            --image-tag-mutability MUTABLE \
+            --no-image-scanning-configuration
+
+      - name: Build Docker image
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          docker build \
+            -f src/orders/Dockerfile \
+            -t ${{ steps.ecr-login.outputs.registry }}/retail-store-orders:${IMAGE_TAG} \
+            src/orders/
+
+      - name: Push Docker image with retry
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          for i in 1 2 3; do
+            docker push ${{ steps.ecr-login.outputs.registry }}/retail-store-orders:${IMAGE_TAG} && break
+            echo "Push attempt $i failed, retrying in 10s..."
+            sleep 10
+          done
+
+      - name: Update Helm values.yaml
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          yq e '.image.repository = "${{ steps.ecr-login.outputs.registry }}/retail-store-orders"' -i src/orders/chart/values.yaml
+          yq e ".image.tag = \"${IMAGE_TAG}\"" -i src/orders/chart/values.yaml
+
+      - name: Commit and push changes
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git add src/orders/chart/values.yaml
+          if git diff --staged --quiet; then
+            echo "No changes to commit for orders"
+          else
+            git commit -m "Update orders image to ${IMAGE_TAG} [skip ci]"
+            git push origin gitops
+          fi
+
+  build-ui:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.ui == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - uses: aws-actions/amazon-ecr-login@v2
+        id: ecr-login
+
+      - name: Ensure ECR repository exists
+        run: |
+          aws ecr describe-repositories \
+            --repository-names "retail-store-ui" \
+            --region "${{ secrets.AWS_REGION }}" 2>/dev/null \
+          || aws ecr create-repository \
+            --repository-name "retail-store-ui" \
+            --region "${{ secrets.AWS_REGION }}" \
+            --image-tag-mutability MUTABLE \
+            --no-image-scanning-configuration
+
+      - name: Build Docker image
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          docker build \
+            -f src/ui/Dockerfile \
+            -t ${{ steps.ecr-login.outputs.registry }}/retail-store-ui:${IMAGE_TAG} \
+            src/ui/
+
+      - name: Push Docker image with retry
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          for i in 1 2 3; do
+            docker push ${{ steps.ecr-login.outputs.registry }}/retail-store-ui:${IMAGE_TAG} && break
+            echo "Push attempt $i failed, retrying in 10s..."
+            sleep 10
+          done
+
+      - name: Update Helm values.yaml
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          yq e '.image.repository = "${{ steps.ecr-login.outputs.registry }}/retail-store-ui"' -i src/ui/chart/values.yaml
+          yq e ".image.tag = \"${IMAGE_TAG}\"" -i src/ui/chart/values.yaml
+
+      - name: Commit and push changes
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git add src/ui/chart/values.yaml
+          if git diff --staged --quiet; then
+            echo "No changes to commit for ui"
+          else
+            git commit -m "Update ui image to ${IMAGE_TAG} [skip ci]"
+            git push origin gitops
+          fi

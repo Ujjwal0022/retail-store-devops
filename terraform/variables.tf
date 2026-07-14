@@ -55,3 +55,8 @@ variable "enable_monitoring" {
   type        = bool
   default     = false
 }
+
+variable "github_repo" {
+  description = "GitHub repository in the format 'org/repo' (e.g. 'LondheShubham153/retail-store-sample-app')"
+  type        = string
+}

@@ -1,0 +1,354 @@
+{
+  "pbtResults": {
+    "2.2 Write property test for `extractImageTag` (Property 1)": {
+      "status": "passed",
+      "lastRunTimestamp": 1783954589003
+    },
+    "2.7 Write property test for commit message format (Property 4)": {
+      "status": "passed",
+      "lastRunTimestamp": 1783954640262
+    },
+    "2.4 Write property test for top-level image update (Property 2)": {
+      "status": "passed",
+      "lastRunTimestamp": 1783954693433
+    },
+    "2.5 Write property test for nested image preservation (Property 3)": {
+      "status": "passed",
+      "lastRunTimestamp": 1783954833957
+    }
+  },
+  "executionHistory": {
+    "1.1 Create `scripts/cicd-helpers/` directory with `package.json` and install `fast-check` and `js-yaml` as dependencies": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953790434
+      },
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953797247
+      },
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953942089
+      }
+    ],
+    "2.1 Implement `extractImageTag(sha)` in `scripts/cicd-helpers/pipelineHelpers.js`": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953790520
+      },
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953946024
+      },
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954024536
+      }
+    ],
+    "2.3 Implement `applyImageUpdate(yamlContent, newRepo, newTag)` in `scripts/cicd-helpers/pipelineHelpers.js`": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953790603
+      },
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954034005
+      },
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954236638
+      }
+    ],
+    "2.6 Implement `buildCommitMessage(service, imageTag)` in `scripts/cicd-helpers/pipelineHelpers.js`": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953790664
+      },
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953946900
+      },
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954025214
+      }
+    ],
+    "3. Checkpoint — Ensure all helper tests pass": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953790776
+      },
+      {
+        "executionId": "6a2c33dc-15d9-4378-a0b5-1d174e250646",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954863231
+      }
+    ],
+    "4.1 Create `.github/workflows/cicd.yml` with trigger configuration": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953790875
+      },
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953948741
+      },
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954025967
+      }
+    ],
+    "4.2 Add the `detect-changes` job to `.github/workflows/cicd.yml`": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953790940
+      },
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954036774
+      },
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954237517
+      }
+    ],
+    "5.1 Add `build-cart` job to `.github/workflows/cicd.yml`": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953791019
+      },
+      {
+        "executionId": "6a2c33dc-15d9-4378-a0b5-1d174e250646",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954864097
+      },
+      {
+        "executionId": "0d1b0c25-601f-41b0-84d9-871f48876615",
+        "chatSessionId": "sess_6434b735-8cc0-4442-b029-ba06fe1b9aad",
+        "timestamp": 1783955861600
+      }
+    ],
+    "5.2 Add `build-catalog` job to `.github/workflows/cicd.yml`": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953791086
+      },
+      {
+        "executionId": "6a2c33dc-15d9-4378-a0b5-1d174e250646",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954868096
+      },
+      {
+        "executionId": "0d1b0c25-601f-41b0-84d9-871f48876615",
+        "chatSessionId": "sess_6434b735-8cc0-4442-b029-ba06fe1b9aad",
+        "timestamp": 1783955865260
+      }
+    ],
+    "5.3 Add `build-checkout` job to `.github/workflows/cicd.yml`": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953791152
+      },
+      {
+        "executionId": "6a2c33dc-15d9-4378-a0b5-1d174e250646",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954869118
+      },
+      {
+        "executionId": "0d1b0c25-601f-41b0-84d9-871f48876615",
+        "chatSessionId": "sess_6434b735-8cc0-4442-b029-ba06fe1b9aad",
+        "timestamp": 1783955869534
+      }
+    ],
+    "5.4 Add `build-orders` job to `.github/workflows/cicd.yml`": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953791219
+      },
+      {
+        "executionId": "6a2c33dc-15d9-4378-a0b5-1d174e250646",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954869530
+      },
+      {
+        "executionId": "0d1b0c25-601f-41b0-84d9-871f48876615",
+        "chatSessionId": "sess_6434b735-8cc0-4442-b029-ba06fe1b9aad",
+        "timestamp": 1783955873266
+      }
+    ],
+    "5.5 Add `build-ui` job to `.github/workflows/cicd.yml`": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953791281
+      },
+      {
+        "executionId": "6a2c33dc-15d9-4378-a0b5-1d174e250646",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954870465
+      },
+      {
+        "executionId": "0d1b0c25-601f-41b0-84d9-871f48876615",
+        "chatSessionId": "sess_6434b735-8cc0-4442-b029-ba06fe1b9aad",
+        "timestamp": 1783955878112
+      }
+    ],
+    "6. Checkpoint — Static review of the workflow YAML": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953791344
+      }
+    ],
+    "1. Bootstrap the Node.js test helper package": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783953942214
+      }
+    ],
+    "2. Implement core pipeline helper functions": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954236718
+      }
+    ],
+    "4. Create the GitHub Actions workflow file skeleton": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954237616
+      }
+    ],
+    "2.2 Write property test for `extractImageTag` (Property 1)": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954260430
+      },
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954277923
+      },
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954354236
+      },
+      {
+        "executionId": "6a2c33dc-15d9-4378-a0b5-1d174e250646",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954540128
+      },
+      {
+        "executionId": "6a2c33dc-15d9-4378-a0b5-1d174e250646",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954600205
+      }
+    ],
+    "2.4 Write property test for top-level image update (Property 2)": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954261358
+      },
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954359368
+      },
+      {
+        "executionId": "6a2c33dc-15d9-4378-a0b5-1d174e250646",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954659071
+      },
+      {
+        "executionId": "6a2c33dc-15d9-4378-a0b5-1d174e250646",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954803636
+      }
+    ],
+    "2.5 Write property test for nested image preservation (Property 3)": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954262063
+      },
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954360199
+      },
+      {
+        "executionId": "6a2c33dc-15d9-4378-a0b5-1d174e250646",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954663226
+      },
+      {
+        "executionId": "6a2c33dc-15d9-4378-a0b5-1d174e250646",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954847750
+      }
+    ],
+    "2.7 Write property test for commit message format (Property 4)": [
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954263024
+      },
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954278878
+      },
+      {
+        "executionId": "2b3c8bf5-b819-44b8-a458-1e4b48ac0699",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954354977
+      },
+      {
+        "executionId": "6a2c33dc-15d9-4378-a0b5-1d174e250646",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954607208
+      },
+      {
+        "executionId": "6a2c33dc-15d9-4378-a0b5-1d174e250646",
+        "chatSessionId": "sess_d2c89cb9-b68b-462d-acd0-7d7c29e0bb9d",
+        "timestamp": 1783954654021
+      }
+    ],
+    "5. Implement the five parallel build jobs": [
+      {
+        "executionId": "0d1b0c25-601f-41b0-84d9-871f48876615",
+        "chatSessionId": "sess_6434b735-8cc0-4442-b029-ba06fe1b9aad",
+        "timestamp": 1783955878183
+      }
+    ]
+  }
+}
